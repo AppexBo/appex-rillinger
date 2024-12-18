@@ -347,5 +347,5 @@ class PyGroups(models.Model):
         return '001'
     
     def get_PuntExp(self):
-        return '001'
+        return '002'
     
