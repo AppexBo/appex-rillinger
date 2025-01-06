@@ -16,6 +16,10 @@ class L10nPyRinging(models.Model):
         string='Fecha inicio'
     )
     
+    date_end = fields.Date(
+        string='Fecha vencimiento'
+    )
+    
     
     
     company_id = fields.Many2one(

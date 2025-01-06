@@ -143,9 +143,6 @@ class L10nPySend(models.Model):
     """
 
 
-    def action_resend_invoice(self):
-        self.button_draft()
-        self.action_post()
 
     def action_py_request_document(self):
         pass

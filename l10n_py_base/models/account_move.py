@@ -1,9 +1,25 @@
 # -*- coding:utf-8 -*-
 
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 
 class AccountMove(models.Model):
     _inherit = ['account.move']
+
+    operacion_condition_dict = {
+        '1' : 'Contado',
+        '2' : 'Crédito'
+    }
+
+    
+    country_partner_id = fields.Many2one(
+        string='Pais',
+        comodel_name='res.country',
+        related='partner_id.country_id',
+        readonly=True,
+        store=True
+    )
+    
     
     
     l10n_py_invoice_sign_date = fields.Datetime(
@@ -147,11 +163,48 @@ class AccountMove(models.Model):
             ('sent', 'ENVIADO'), 
             ('observed', 'OBSERVADO'),
             ('pending', 'PENDIENTE'),
+            ('canceled', 'CANCELADO')            
         ],
         default='pending',
         required=True,
-        readonly=True 
-        
+        readonly=True,
+        copy=False
+    )
+
+    
+    establishment_id = fields.Many2one(
+        string='Establecimiento',
+        comodel_name='py.establishment',
+    )
+
+    
+    expedition_point_id = fields.Many2one(
+        string='Punto expedicion',
+        comodel_name='expedition.point'
     )
     
+    l10n_latam_document_number = fields.Char(
+        string='Nro Documento', 
+        readonly=True
+    )
+
+    
+    invoice_number = fields.Char(
+        string='Nro. Factura',
+    )
+    
+    
+    operation_condition = fields.Selection(
+        string='Condicion de la operacion',
+        selection= [ (key, value) for key , value in operacion_condition_dict.items() ],
+        default='1',
+        required=True
+    )
+    
+
+    
+    ringing_date_end = fields.Date(
+        string='Fecha vencimiento de timbrado',
+        copy=False
+    )
     

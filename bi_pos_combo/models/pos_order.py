@@ -48,11 +48,18 @@ class ProductPack(models.Model):
 		required=True,
         help='Define la cantidad máxima permitida por categoría'
     )
-	minima_cantidad_por_categoria = fields.Integer(
-		string='Mínima Cantidad por Categoría',
-		required=True,
-		help='Define la cantidad mínima permitida por categoría'
-	)
+	#minima_cantidad_por_categoria = fields.Integer(
+	#	string='Mínima Cantidad por Categoría',
+	#	required=True,
+	#	help='Define la cantidad mínima permitida por categoría'
+	#)
+
+	cantidades = fields.Float(
+        string='Cantidad usada del producto',
+        required=True,
+        help='Define la cantidad que se usara de esta categoria, todos deben tener el la misma unidad de medida',
+        digits=(8, 6)  # 8 dígitos antes del punto decimal, 6 después
+    )
 
 class pos_config(models.Model):
 	_inherit = 'pos.config'
@@ -132,7 +139,8 @@ class POSOrderLoad(models.Model):
 					'bi_product_template',
 					'name',
 					'maxima_cantidad_por_categoria',
-					'minima_cantidad_por_categoria',
+					#'minima_cantidad_por_categoria',
+					'cantidades',
 				],
 			}
 		}
@@ -156,10 +164,10 @@ class RelatedPosStock(models.Model):
 
 		_logger.info("=entro?========================================================================")
 		for product in array:
-			#_logger.info(f"Procesando producto: {product}")
+			_logger.info(f"Procesando producto: {product}")
 			try:
 				if item.id == product.get('id'):
-					total_combo_qty += product.get('combo_qty', 0)
+					total_combo_qty += product.get('combo_qty', 0) * product.get('cantidades', 1) 
 			except Exception as e:
 				_logger.error(f"Error al obtener el campo {field_name}: {e}")
 		#_logger.info("=aa========================================================================")

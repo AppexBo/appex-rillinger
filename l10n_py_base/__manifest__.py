@@ -47,7 +47,9 @@
         'views/res_currency.xml',
         'views/res_company.xml',
         'views/res_partner.xml',
+        'views/establishment_point.xml',
         
+        'views/menu.xml',
         
 	],
     "installable": True,

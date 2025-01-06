@@ -54,6 +54,7 @@
                             <tree string="Lineas de timbrado" editable="bottom">
                                 <field name="name" required="1"/>
                                 <field name="date_init" required="1" />
+                                <field name="date_end" required="1" />
                                 <field name="use"/>
                             </tree>
                             

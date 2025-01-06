@@ -53,19 +53,41 @@ class PyGroups(models.Model):
     def getDigitVerRUC(self):
         return self.company_id.getDigitVerRUC()
     
+    def get_serial_number(self):
+        if self.l10n_latam_document_type_id and self.expedition_point_id:
+            sequence_ids : models.Model = self.expedition_point_id.expedition_point_sequence_ids
+            sequence_id = sequence_ids.filtered(lambda s:s.name.id == self.l10n_latam_document_type_id.id)
+            if sequence_id:
+                number = sequence_id[0].get_serial()
+                return number
+        return ''
     
-    def get_invoice_number(self):
-        if self.l10n_latam_document_number:
-            if int(self.l10n_latam_document_number) >= 9999999:
-                raise UserError('El numero de documento/factura a llegado al limite')
-            return self.l10n_latam_document_number[1:]
+    def next_sequence(self):
+        if self.l10n_latam_document_type_id and self.expedition_point_id:
+            sequence_ids : models.Model = self.expedition_point_id.expedition_point_sequence_ids
+            sequence_id = sequence_ids.filtered(lambda s:s.name.id == self.l10n_latam_document_type_id.id)
+            if sequence_id:
+                return sequence_id[0].next_sequence()
+        
+    
+    def get_invoice_number(self, ir_next = False):
+        if self.l10n_latam_document_type_id and self.expedition_point_id:
+            sequence_ids : models.Model = self.expedition_point_id.expedition_point_sequence_ids
+            sequence_id = sequence_ids.filtered(lambda s:s.name.id == self.l10n_latam_document_type_id.id)
+            if sequence_id:
+                number = sequence_id[0].get_sequence()
+                if ir_next:
+                    self.write({'invoice_number' : str(number)})
+                    sequence_id[0].next_sequence()
+                return number
+
         raise UserError('No tiene una secuencia de documento generado')
     
     def get_ringing_date(self):
         return self.company_id.get_ringing_date()
     
     def get_emision_date(self):
-        self.write({'l10n_py_emision_date' : fields.datetime.now()})
+        self.write({'l10n_py_emision_date' : self.invoice_date}) #
         fecha_hora_paraguay = self.l10n_py_emision_date.astimezone(pytz.timezone('America/Asuncion'))
         return fecha_hora_paraguay.strftime("%Y-%m-%dT%H:%M:%S")
     
@@ -184,17 +206,17 @@ class PyGroups(models.Model):
         raise UserError('Por favor establezca un indicador de presencia')
     
     def get_E601(self):
-        return '1'
+        if self.operation_condition:
+            return self.operation_condition
+        raise UserError('No se encontro una condicion de operacion: Credito/Contado')
     
     def get_E602(self):
-        return 'Contado'
+        if self.operation_condition:
+            return self.operacion_condition_dict.get(self.operation_condition, '')
+        raise UserError('No se encontro una condicion de operacion: Credito/Contado')
     
-    
-
-   
-
-    
-    
+     
+    #cedula, crokis, agua, luz, 
     
     
     

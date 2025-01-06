@@ -17,6 +17,10 @@ patch(Order.prototype, {
             this.hide_zone_pdv();
             this.hide_zone_form_cliente();
             //this.add_acction_button_facturate_detection();
+            this.hide_button_venta_diaria_cerrar_sesion();
+            this.hide_button_ordenes_menu();
+            this.hide_button_numpad_and_others();
+            this.hide_all_products_price_eq_cero();
         });
         
         // Observar cambios en el DOM dentro del contenedor principal
@@ -26,7 +30,78 @@ patch(Order.prototype, {
         });
     },
 
-    
+    hide_all_products_price_eq_cero(){
+        // Seleccionar todas las etiquetas <article> con la clase especificada
+        const articles = document.querySelectorAll(
+            'article.flex-column.product.position-relative.btn.btn-light.d-flex.align-items-stretch.p-0.m-0.text-start.cursor-pointer.overflow-hidden.transition-base'
+        );
+
+        // Recorrer cada <article>
+        articles.forEach(article => {
+            // Buscar el <div> con clase "product-content d-flex flex-column justify-content-between h-100 mx-2.py-1"
+            const productContent = article.querySelector(
+                'div.product-content.d-flex.flex-column.justify-content-between.h-100.mx-2.py-1'
+            );
+
+            if (productContent) {
+                // Buscar el <span> dentro de este <div>
+                const priceTag = productContent.querySelector('span.price-tag.text-primary.py-1.fw-bolder');
+
+                // Verificar si el <span> existe y si su texto comienza con "0" osea los guarani no pueden ser menores a 0
+                if (priceTag && priceTag.textContent.trim().startsWith("0")) {
+                    // Ocultar el <article> utilizando !important
+                    article.style.setProperty('display', 'none', 'important');
+                }
+            }
+        });
+    },
+
+    hide_button_venta_diaria_cerrar_sesion(){
+        $("button.button.icon.btn.btn-lg.btn-secondary").each(function() {
+            if ($(this).text().trim() === 'Venta diaria') {
+                $(this).hide();
+            }
+        });
+    },
+
+    hide_button_ordenes_menu(){
+        // Seleccionar todos los elementos con la clase "dropdown-item.with-badge.py-2"
+        const button_ordenes_menu = document.querySelectorAll(".dropdown-item.with-badge.py-2");
+        // Ocultar los elementos encontrados
+        button_ordenes_menu.forEach(button_ordenes_menu => {
+            // Verificar tiene el campo esta visible
+            const have_styles = button_ordenes_menu.hasAttribute('style');
+            if (!have_styles) {
+                button_ordenes_menu.setAttribute('style', 'display: none !important;')
+            }
+        });
+    },
+
+    hide_button_numpad_and_others(){
+        // Seleccionar todos los elementos con la clase ".col.btn.btn-light.py-3.border.fw-bolder.rounded-0"
+        const buttons_numpad_and_others = document.querySelectorAll(".col.btn.btn-light.py-3.border.fw-bolder.rounded-0");
+        // Lista de valores que deseas ocultar
+        const valuesToHide = ["+/-", ",", "% de desc.", "Precio"];
+        // Ocultar los elementos encontrados
+        buttons_numpad_and_others.forEach(button => {
+            if (valuesToHide.includes(button.textContent.trim())) {
+                // Verificar tiene el campo esta visible
+                const have_styles = button.hasAttribute('style');
+                if (!have_styles) {
+                    button.setAttribute('style', 'display: none !important;')
+                    /*
+                    // Ocultar el texto aplicando estilos CSS
+                    button.style.color = 'transparent';
+                    button.style.textShadow = '0 0 0 transparent';
+                    
+                    // Bloquear el botón para que no se pueda presionar
+                    button.setAttribute('disabled', 'true');
+                    */ 
+                }
+            }
+        });
+    },
+
     hide_info_button_products_pdv(){
         // Seleccionar todos los elementos con la clase "product-information-tag"
         const info_buttons = document.querySelectorAll(".product-information-tag");

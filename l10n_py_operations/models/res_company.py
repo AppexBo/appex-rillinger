@@ -90,6 +90,13 @@ class ResCompany(models.Model):
             return ringing[0].date_init.strftime("%Y-%m-%d")
         raise UserError(f'La compañia: {self.name}, no se encontro un timbrado establecido')
     
+    def get_ringing_date_end(self):
+        ringing = self.ringing_ids.filtered(lambda ring: ring.use)
+        if ringing:
+            return ringing[0].date_end
+        #raise UserError(f'La compañia: {self.name}, no se encontro un timbrado establecido')
+    
+    
     def get_ringing_code(self):
         ringing = self.ringing_ids.filtered(lambda ring: ring.use)
         if ringing:

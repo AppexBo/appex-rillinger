@@ -149,8 +149,15 @@ class AccountMove(models.Model):
         Est, PunExp = self.get_Est(), self.get_PuntExp()
         
         str_format += f'<dEst>{Est}</dEst>'        
-        str_format += f'<dPunExp>{PunExp}</dPunExp>'        
-        str_format += f'<dNumDoc>{self.get_invoice_number()}</dNumDoc>'
+        str_format += f'<dPunExp>{PunExp}</dPunExp>'     
+
+        C007 = self.get_invoice_number(ir_next = True)
+        str_format += f'<dNumDoc>{C007}</dNumDoc>'
+        
+        C010 = self.get_serial_number()
+        if C010:
+            str_format += f'<dSerieNum>{C010}</dSerieNum>'
+
         str_format += f'<dFeIniT>{self.get_ringing_date()}</dFeIniT>'
         str_format += '</gTimb>'
         return str_format
@@ -482,3 +489,74 @@ class AccountMove(models.Model):
         return str_format
         
     
+
+
+    
+    # @api.depends('name')
+    # def _compute_l10n_latam_document_number(self):
+    #     l10n_py_document = True
+    #     recs_with_name = self.filtered(lambda x: x.name != '/')
+    #     for rec in recs_with_name:
+    #         if rec.l10n_latam_document_type_id and rec.establishment_id and rec.expedition_point_id:
+                
+    #             name = rec.name
+    #             doc_code_prefix = rec.l10n_latam_document_type_id.doc_code_prefix
+    #             if doc_code_prefix and name and rec.establishment_id and rec.expedition_point_id and not rec.l10n_latam_document_number:
+    #                 name = rec.get_invoice_number() #name.split(" ", 1)[-1]
+    #                 name = f"{rec.establishment_id.get_code()} {rec.expedition_point_id.get_code()} {rec.get_serial_number()} {name}"
+    #             elif doc_code_prefix and rec.l10n_latam_document_number:
+    #                 name = rec.l10n_latam_document_number
+
+    #         else:
+    #             l10n_py_document = False
+    #             break
+
+    #         if l10n_py_document:
+    #             rec.l10n_latam_document_number = name
+    #     if l10n_py_document:
+    #         remaining = self - recs_with_name
+    #         remaining.l10n_latam_document_number = False
+    #     else:
+    #         super(AccountMove, self)._compute_l10n_latam_document_number()
+            
+
+    @api.depends('posted_before', 'state', 'journal_id', 'date', 'move_type', 'payment_id')
+    def _compute_name(self):
+        self = self.sorted(lambda m: (m.date, m.ref or '', m._origin.id))
+
+        for move in self:
+            if move.state == 'cancel':
+                continue
+
+            move_has_name = move.name and move.name != '/'
+            if move_has_name or move.state != 'posted':
+                if not move.posted_before and not move._sequence_matches_date():
+                    if move._get_last_sequence():
+                        # The name does not match the date and the move is not the first in the period:
+                        # Reset to draft
+                        move.name = False
+                        continue
+                else:
+                    if move_has_name and move.posted_before or not move_has_name and move._get_last_sequence():
+                        # The move either
+                        # - has a name and was posted before, or
+                        # - doesn't have a name, but is not the first in the period
+                        # so we don't recompute the name
+                        continue
+            if move.l10n_latam_document_type_id and move.establishment_id and move.expedition_point_id and not move.l10n_latam_document_number:
+                move.name = f"{move.l10n_latam_document_type_id.doc_code_prefix} {move.establishment_id.get_code()} {move.expedition_point_id.get_code()} {move.get_serial_number()} {move.get_invoice_number()}"
+            elif move.l10n_latam_document_number and move.l10n_latam_document_type_id:
+                move.name = f"{move.l10n_latam_document_type_id.doc_code_prefix} {move.l10n_latam_document_number}"
+            else:
+                super(AccountMove, self)._compute_name()
+                break
+
+
+    def button_cancel(self):
+        super(AccountMove, self).button_cancel()
+        self.write({'edi_py_state' : 'canceled'})
+
+
+    def button_draft(self):
+        super(AccountMove, self).button_draft()
+        self.write({'edi_py_state' : 'pending'})

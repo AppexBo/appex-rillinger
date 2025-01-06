@@ -17,3 +17,6 @@ access_l10n_py_endpoint,access_l10n_py_endpoint,model_l10n_py_endpoint,,1,1,1,1
 access_l10n_py_payment_currency,access_l10n_py_payment_currency,model_l10n_py_payment_currency,,1,1,1,1
 access_l10n_py_card_denomination,access_l10n_py_card_denomination,model_l10n_py_card_denomination,,1,1,1,1
 access_l10n_py_card,access.l10n.py.card,model_l10n_py_card,,1,1,1,1
+access_l10n_py_expedition_point_sequence,access.l10n_py_expedition_point_sequence,model_expedition_point_sequence,,1,1,1,1
+access_l10n_py_expedition_point,access.l10n_py_expedition_point,model_expedition_point,,1,1,1,1
+access_py_establishment,access.py_establishment,model_py_establishment,,1,1,1,1

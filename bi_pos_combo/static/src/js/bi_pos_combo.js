@@ -40,9 +40,10 @@ patch(PosStore.prototype, {
 									else{
 										sub_product['combo_qty'] = 0;
 										sub_product['maxima_cantidad_por_categoria'] = combo_products[i]['maxima_cantidad_por_categoria'];
-										sub_product['minima_cantidad_por_categoria'] = combo_products[i]['minima_cantidad_por_categoria'];
+										//sub_product['minima_cantidad_por_categoria'] = combo_products[i]['minima_cantidad_por_categoria'];
 										sub_product['combo_product_category_id'] = combo_products[i]['category_id'];
-
+										sub_product['cantidades'] = combo_products[i]['cantidades'];
+										
 										if (!all_categories.some(category => category.id === sub_product['combo_product_category_id'][0])) {
 											all_categories.push(
 												{
@@ -117,6 +118,7 @@ patch(Orderline.prototype, {
     	var combo_data=[];
     	list_data.forEach(function(data){
     		if(data != null){
+				debugger
 	    		var prod_data =  {
 							'active': data.active,
 							'applicablePricelistItems': data.applicablePricelistItems,
@@ -127,6 +129,7 @@ patch(Orderline.prototype, {
 							'categ_id': data.categ_id,
 							'cid': data.cid,
 							'combo_qty': data.combo_qty,
+							'cantidades': data.cantidades,
 							'combo_limit': data.combo_limit,
 							'default_code': data.default_code,
 							'description': data.description,

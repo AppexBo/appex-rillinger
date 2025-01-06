@@ -10,4 +10,4 @@ from . import l10n_py_ringing
 from . import res_partner
 from . import l10n_py_payment_current
 from . import l10n_py_card
-#from ...l10n_py_point_sale.models import pos_payment
+from . import establishment_point
