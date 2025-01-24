@@ -21,4 +21,5 @@
             'hide_buttons_in_pdv/static/**/*',
         ],
     },
+    'license': 'AGPL-3',
 }
