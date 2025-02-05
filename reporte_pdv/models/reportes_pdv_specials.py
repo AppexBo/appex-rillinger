@@ -26,11 +26,14 @@ class PosOrderLine(models.Model):
     cajero = fields.Char(string='Cajero',compute='_compute_order_values', store=False)
     metodo_pago = fields.Char(string='Metodo de Pago',compute='_compute_order_values', store=False)
     status = fields.Selection( selection=[ 
-                                        ('not_paid', 'No Pagado'),
-                                        ('paid', 'Pagado'),
-                                        ('in_payment', 'En Proceso de Pago'),
-                                        ('unknown', 'Desconocido')  # Valor por defecto
-                                         ],
+            ('not_paid', 'Sin pagar'),
+            ('in_payment', 'En proceso de pago'),
+            ('paid', 'Pagado'),
+            ('partial', 'Pagado parcialmente'),
+            ('reversed', 'Revertido'),
+            ('invoicing_legacy', 'Sistema anterior de facturación'),
+            ('unknown', 'Desconocido')  # Valor por defecto
+    ],
     string='Estado',
     compute='_compute_order_values',
     store=False
