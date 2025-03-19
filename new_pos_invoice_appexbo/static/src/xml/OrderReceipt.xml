@@ -3,29 +3,29 @@
      <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[hasclass('pos-receipt')]" position="replace">
             <div class="pos-receipt">
-                <div style="border-radius:10px ;border: 1px solid #04aa6b; font-size:14px;width:75%;margin: auto;text-align:center;">
+                <div style="font-size:14px;width:75%;margin: auto;text-align:center;">
                     <div> <strong>Bits &amp; Cream</strong></div>
                 </div>
-                <div style="border-radius:10px ;border: 1px solid #04aa6b; font-size:10px;width:50%;margin: 2px auto;text-align:center;">
-                    <strong>Número de orden: </strong><t t-esc="props.data.name"/>
+                <div style="font-size:10px;width:50%;margin: 2px auto;text-align:center;">
+                    <strong><t t-esc="props.data.name"/></strong>
                 </div>
                 <div class="pos-receipt-contact">
-                    <div style="border-radius:10px ;border: 1px solid #04aa6b; font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                        Fecha: <t t-esc="props.data.date"/>
+                    <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
+                        <strong>Fecha:</strong> <t t-esc="props.data.date"/>
                     </div>
                 </div>
                 <!-- Líneas de Pedido -->
-                <table style="border-radius:10px ;border: 1px solid #04aa6b;width:100%;text-align:center;" class="orderlines">
+                <table style="width:100%;text-align:left;" class="orderlines">
                     <tr style="border: 1px solid #04aa6b;">
                         <th style="border: 1px dotted #04aa6b;font-size:10px;">Producto</th>
-                        <th style="border: 1px solid #04aa6b;font-size:10px;">Subtotal</th>
-                        <th style="border: 1px solid #04aa6b;font-size:10px;">Precio</th>
-                        <th style="border: 1px solid #04aa6b;font-size:10px;">Cantidad</th>
+                        <th style="border: 1px solid #04aa6b;font-size:10px;">Subt</th>
+                        <th style="border: 1px solid #04aa6b;font-size:10px;">P/U</th>
+                        <th style="border: 1px solid #04aa6b;font-size:10px;">Ctd</th>
                     </tr>
                     <t t-foreach="props.data.orderlines" t-as="line" t-key="line.id">
                         <tr style="border: 1px solid #04aa6b;">
                             
-                            <td style="border: 1px solid #04aa6b;">
+                            <td style="font-size: 8px; border: 1px solid #04aa6b;">
                                 <t t-esc="line.productName" />
                                 <t t-if="line.is_pack">
                                     <t t-if="line.combo_products">
@@ -41,28 +41,28 @@
                                     </t>
                                 </t>
                             </td>
-                            <td style="border: 1px solid #04aa6b;">
+                            <td style="font-size: 8px; border: 1px solid #04aa6b;">
                                 <t t-esc="line.price" />
                             </td>
-                            <td style="border: 1px solid;">
+                            <td style="font-size: 5px; border: 1px solid;">
                                 <s t-esc="line.oldUnitPrice" t-if="line.oldUnitPrice" />
                                 <t t-esc="line.unitPrice"/>
                             </td>
-                            <td style="border: 1px solid #04aa6b;"><t t-esc="line.qty" /> </td>
+                            <td style="font-size: 5px; border: 1px solid #04aa6b;"><t t-esc="line.qty" /> </td>
                         </tr>
                     </t>
                 </table>
                 <br/>
-                <table style="1px solid #04aa6b;width:60%;text-align:center;margin-bottom:4px;" class="orderlines">
-                    <tr style="border: 1px solid #04aa6b;">
-                        <td style="border: 1px solid #04aa6b;">Total: <t t-esc="props.formatCurrency(props.data.amount_total)"/></td>
+                <table style="width:60%;text-align:left !important;margin-bottom:4px;" class="orderlines">
+                    <tr style="">
+                        <td style="">Total: <t t-esc="props.formatCurrency(props.data.amount_total)"/></td>
                     </tr>
-                    <tr style="border: 1px solid #04aa6b;">
-                        <td style="border: 1px solid #04aa6b;">A Pagar: <t t-esc='props.formatCurrency(props.data.amount_total + props.data.rounding_applied)'/></td>
+                    <tr style="">
+                        <td style="">A Pagar: <t t-esc='props.formatCurrency(props.data.amount_total + props.data.rounding_applied)'/></td>
                     </tr>
                     <t t-if="props.data.total_discount">
-                        <tr style="border: 1px solid #04aa6b;">
-                            <td style="border: 1px solid #04aa6b;">Descuentos: <t t-esc="props.format_currency(props.data.total_discount)"/></td>
+                        <tr style="">
+                            <td style="">Descuentos: <t t-esc="props.format_currency(props.data.total_discount)"/></td>
                         </tr>
                     </t>
                 </table>
