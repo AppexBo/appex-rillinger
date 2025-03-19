@@ -26,29 +26,27 @@
                         <tr style="border: 1px solid #04aa6b;">
                             
                             <td style="font-size: 8px; border: 1px solid #04aa6b;">
-                                <t t-esc="line.productName" />
+                                <strong><t t-esc="line.productName" /></strong>
                                 <t t-if="line.is_pack">
                                     <t t-if="line.combo_products">
-                                        <ul class="info-list">
-                                            <t t-foreach="line.combo_products" t-as="products" t-key="products.id">
-                                                <t t-if="products">
-                                                    <div class="product-name" style="font-size: 10px; font-weight: 500;">
-                                                        <t t-esc="products.display_name" /> [<t t-esc="products.combo_qty"/>]
-                                                    </div>
-                                                </t>
+                                        <t t-foreach="line.combo_products" t-as="products" t-key="products.id">
+                                            <t t-if="products">
+                                                <div class="product-name" style="font-size: 8px; font-weight: 500;">
+                                                   <strong>-</strong><t t-esc="products.display_name" /> [<t t-esc="products.combo_qty"/>]
+                                                </div>
                                             </t>
-                                        </ul>
+                                        </t>
                                     </t>
                                 </t>
                             </td>
                             <td style="font-size: 8px; border: 1px solid #04aa6b;">
                                 <t t-esc="line.price" />
                             </td>
-                            <td style="font-size: 5px; border: 1px solid;">
+                            <td style="font-size: 8px; border: 1px solid;">
                                 <s t-esc="line.oldUnitPrice" t-if="line.oldUnitPrice" />
                                 <t t-esc="line.unitPrice"/>
                             </td>
-                            <td style="font-size: 5px; border: 1px solid #04aa6b;"><t t-esc="line.qty" /> </td>
+                            <td style="font-size: 8px; border: 1px solid #04aa6b;"><t t-esc="line.qty" /> </td>
                         </tr>
                     </t>
                 </table>
