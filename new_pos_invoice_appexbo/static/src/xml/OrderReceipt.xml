@@ -8,8 +8,7 @@
                 </div>
                 <div style="font-size:10px;width:50%;margin: 2px auto;text-align:center;">
                     <strong><t t-esc="props.data.name"/></strong>
-                    <strong>Número de orden: </strong><t t-esc="props.data.pos_reference"/>
-
+                    <strong>Número de orden: </strong><t t-esc="props.data.session.sequence_number"/>
                 </div>
                 <div class="pos-receipt-contact">
                     <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
@@ -44,7 +43,7 @@
                             <td style="font-size: 8px;">
                                 <t t-esc="line.price" />
                             </td>
-                            <td style="font-size: 8px; border: 1px solid;">
+                            <td style="font-size: 8px;">
                                 <s t-esc="line.oldUnitPrice" t-if="line.oldUnitPrice" />
                                 <t t-esc="line.unitPrice"/>
                             </td>
