@@ -18,14 +18,12 @@
                     <div class="pos-receipt-client">
                         <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
                             <strong>Cliente:</strong> <t t-esc="props.data.partner.name"/>
-                        </div>
-                        <t t-if="props.data.partner.l10n_latam_identification_type_id">
-                             <t t-if="props.data.partner.l10n_latam_identification_type_id[1] == 'RUC'">
-                                <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                                    <strong>RUC:</strong> <t t-esc="props.data.partner.vat"/>
-                                </div>
+                            <t t-if="props.data.partner.l10n_latam_identification_type_id">
+                                <t t-if="props.data.partner.l10n_latam_identification_type_id[1] == 'RUC'">
+                                    <strong>, RUC:</strong> <t t-esc="props.data.partner.vat"/>    
+                                </t>
                             </t>
-                        </t>
+                        </div>
                     </div>
                 </t>
                 <!-- Líneas de Pedido -->
