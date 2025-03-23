@@ -14,15 +14,15 @@
                         <strong>Fecha:</strong> <t t-esc="props.data.date"/>
                     </div>
                 </div>
-                <t t-if="props.partner">
+                <t t-if="props.data.partner">
                     <div class="pos-receipt-client">
                         <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                            <strong>Cliente:</strong> <t t-esc="props.partner.name"/>
+                            <strong>Cliente:</strong> <t t-esc="props.data.partner.name"/>
                         </div>
-                        <t t-if="props.partner.l10n_latam_identification_type_id">
-                             <t t-if="props.partner.l10n_latam_identification_type_id[1] == 'RUC'">
+                        <t t-if="props.data.partner.l10n_latam_identification_type_id">
+                             <t t-if="props.data.partner.l10n_latam_identification_type_id[1] == 'RUC'">
                                 <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                                    <strong>RUC:</strong> <t t-esc="props.partner.vat"/>
+                                    <strong>RUC:</strong> <t t-esc="props.data.partner.vat"/>
                                 </div>
                             </t>
                         </t>
