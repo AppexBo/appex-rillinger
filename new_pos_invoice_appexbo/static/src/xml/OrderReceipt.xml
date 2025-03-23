@@ -17,7 +17,7 @@
                 <t t-if="props.data.client">
                     <div class="pos-receipt-client">
                         <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                            <strong>Cliente:</strong> <t t-esc="props.data.client.partner_id.name"/>
+                            <strong>Cliente:</strong> <t t-esc="props.data.client.name"/>
                         </div>
                         <t t-if="props.data.client.ruc">
                             <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
