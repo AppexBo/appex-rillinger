@@ -14,14 +14,14 @@
                         <strong>Fecha:</strong> <t t-esc="props.data.date"/>
                     </div>
                 </div>
-                <t t-if="props.data.client">
+                <t t-if="props.partner">
                     <div class="pos-receipt-client">
                         <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                            <strong>Cliente:</strong> <t t-esc="props.data.client.name"/>
+                            <strong>Cliente:</strong> <t t-esc="props.partner.name"/>
                         </div>
-                        <t t-if="props.data.client.ruc">
+                        <t t-if="props.partner.ruc">
                             <div style="font-size:10px;width:70%;margin: 2px auto;text-align:center;">
-                                <strong>RUC:</strong> <t t-esc="props.data.client.ruc"/>
+                                <strong>RUC:</strong> <t t-esc="props.partner.ruc"/>
                             </div>
                         </t>
                     </div>
